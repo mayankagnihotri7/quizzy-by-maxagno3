@@ -14,6 +14,9 @@
 # Ignore database.yml file
 /config/database.yml
 
+# Ignore test/fixtures and test/reports.
+test/fixtures
+
 # Ignore all logfiles and tempfiles.
 /log/*.log
 /tmp
