@@ -6,6 +6,10 @@ class User < ApplicationRecord
   before_save :ensure_email_downcase
   enum status: { standard_user: 0, admin_user: 1 }
 
+  def ensure_user_is_admin
+    self.status == "admin_user"
+  end
+
   private
 
    def ensure_email_downcase
