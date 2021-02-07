@@ -2,7 +2,7 @@ require "test_helper"
 
 class UserTest < ActiveSupport::TestCase
   def setup
-    @user = User.create!(email: "mayankagnihotri7@gmail.com", first_name: "Mayank", last_name: "Agnihotri")
+    @user = User.create(email: "mayankagnihotri7@gmail.com", first_name: "Mayank", last_name: "Agnihotri")
   end
 
   def test_user_should_be_valid
@@ -61,5 +61,13 @@ class UserTest < ActiveSupport::TestCase
       @user.email = invalid_email
       assert_not @user.valid?
     end
+  end
+
+  def test_user_should_have_valid_role
+    user = User.new(email: "sam@example.com", first_name: "Sam", last_name: "Smith", status: "admin_user")
+    assert_difference "User.count" do
+      user.save
+    end
+    assert user.admin_user?
   end
 end
