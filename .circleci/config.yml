@@ -19,8 +19,8 @@ jobs:
       #install sqlite dependency
       - run: sudo apt update && sudo apt install zlib1g-dev libsqlite3-dev
       # Bundle install
-      - run: bundle check --path=vendor/bundle || bundle install --path=vendor/bundle --jobs=4 --retry=3
       - run: gem install bundler:2.2.8
+      - run: bundle check --path=vendor/bundle || bundle install --path=vendor/bundle --jobs=4 --retry=3
       # Setup database
       - run: cp config/database.yml.ci config/database.yml
       - run: bundle exec rake db:create db:schema:load --trace
