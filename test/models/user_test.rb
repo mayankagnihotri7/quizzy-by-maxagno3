@@ -2,9 +2,11 @@ require "test_helper"
 
 class UserTest < ActiveSupport::TestCase
   def setup
-    @user = User.create(email: "mayankagnihotri7@gmail.com", first_name: "Mayank", last_name: "Agnihotri")
+    @user = User.create( email: "mayankagnihotri7@gmail.com", first_name: "Mayank", last_name: "Agnihotri",
+                        password: "foobar", password_confirmation: "foobar")
   end
 
+  # User tests.
   def test_user_should_be_valid
     assert @user.valid?
   end
@@ -14,6 +16,7 @@ class UserTest < ActiveSupport::TestCase
     assert_not @user.valid?
   end
 
+  # Testing for first name and last name
   def test_user_should_not_be_valid_without_first_name
     @user.first_name = ""
     assert_not @user.valid?
@@ -34,6 +37,23 @@ class UserTest < ActiveSupport::TestCase
     assert_not @user.valid?
   end
 
+  # Testing password
+  def test_password_must_not_be_blank
+    @user.password = " " * 6
+    assert_not @user.valid?
+  end
+
+  def test_password_must_not_have_invalid_password_length
+    @user.password = "a" * 5
+    assert_not @user.valid?
+  end
+
+  def test_password_and_password_confirmation_must_match
+    @user.password = @user.password_confirmation = "a" * 6
+    assert @user.save
+  end
+
+  # Testing email
   def test_user_should_not_have_same_email
     test_user = @user.dup
     assert_not test_user.valid?
@@ -63,8 +83,9 @@ class UserTest < ActiveSupport::TestCase
     end
   end
 
+  # Testing valid user role
   def test_user_should_have_valid_role
-    user = User.new(email: "sam@example.com", first_name: "Sam", last_name: "Smith", status: "admin_user")
+    user = User.new(email: "sam@example.com", first_name: "Sam", last_name: "Smith", status: "admin_user", password: "foobar", password_confirmation: "foobar")
     assert_difference "User.count" do
       user.save
     end
