@@ -20,11 +20,13 @@ class UserTest < ActiveSupport::TestCase
   def test_user_should_not_be_valid_without_first_name
     @user.first_name = ""
     assert_not @user.valid?
+    assert_equal ["First name can't be blank"], @user.errors.full_messages
   end
 
   def test_first_name_should_have_valid_length
     @user.first_name = "a" * 51
     assert_not @user.valid?
+    assert_equal ["First name is too long (maximum is 50 characters)"], @user.errors.full_messages
   end
 
   def test_user_should_not_be_valid_without_last_name
@@ -35,6 +37,7 @@ class UserTest < ActiveSupport::TestCase
   def test_last_name_should_have_valid_length
     @user.last_name = "a" * 51
     assert_not @user.valid?
+    assert_equal ["Last name is too long (maximum is 50 characters)"], @user.errors.full_messages
   end
 
   # Testing password
@@ -44,7 +47,7 @@ class UserTest < ActiveSupport::TestCase
   end
 
   def test_password_must_not_have_invalid_password_length
-    @user.password = "a" * 5
+    @user.password = @user.password_confirmation = "a" * 5
     assert_not @user.valid?
   end
 
@@ -57,6 +60,7 @@ class UserTest < ActiveSupport::TestCase
   def test_user_should_not_have_same_email
     test_user = @user.dup
     assert_not test_user.valid?
+    assert_equal ["Email has already been taken"], test_user.errors.full_messages
   end
 
   def test_email_should_be_saved_in_lowercase
@@ -64,7 +68,7 @@ class UserTest < ActiveSupport::TestCase
     duplicate_user = @user.dup
     duplicate_user.email = "UsEr@ExaMple.CoM"
     duplicate_user.save!
-    assert_equal duplicate_user.email.downcase, email
+    assert_equal duplicate_user.email, email
   end
 
   def test_email_should_have_valid_email_address
@@ -81,6 +85,7 @@ class UserTest < ActiveSupport::TestCase
       @user.email = invalid_email
       assert_not @user.valid?
     end
+    assert_equal ["Email is invalid"], @user.errors.full_messages
   end
 
   # Testing valid user role
