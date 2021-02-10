@@ -2,8 +2,8 @@ require "test_helper"
 
 class UserTest < ActiveSupport::TestCase
   def setup
-    @user = User.create( email: "mayankagnihotri7@gmail.com", first_name: "Mayank", last_name: "Agnihotri",
-                        password: "foobar", password_confirmation: "foobar")
+    @user = User.create!( email: "mayankagnihotri7@gmail.com", first_name: "Mayank", last_name: "Agnihotri",
+                        password: "foobar", password_confirmation: "foobar", role: 0)
   end
 
   # User tests.
@@ -90,10 +90,10 @@ class UserTest < ActiveSupport::TestCase
 
   # Testing valid user role
   def test_user_should_have_valid_role
-    user = User.new(email: "sam@example.com", first_name: "Sam", last_name: "Smith", status: "admin_user", password: "foobar", password_confirmation: "foobar")
+    user = User.new(email: "sam@example.com", first_name: "Sam", last_name: "Smith", role: 1, password: "foobar", password_confirmation: "foobar")
     assert_difference "User.count" do
       user.save
     end
-    assert user.admin_user?
+    assert user.administrator?
   end
 end

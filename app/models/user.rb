@@ -1,6 +1,7 @@
 class User < ApplicationRecord
   VALID_EMAIL_REGEX = /\A([\w+\-].?)+@[a-z\d\-]+(\.[a-z]+)*\.[a-z]+\z/i.freeze
-  enum status: { standard_user: 0, admin_user: 1 }
+  enum role: { standard: 0, administrator: 1 }
+  # validates :role, numericality: { only_integer: true }
   validates :email, presence: true, uniqueness: { case_sensitive: false }, format: { with: VALID_EMAIL_REGEX }
   validates :first_name, presence: true, length: { maximum: 50 }
   validates :last_name, presence: true, length: { maximum: 50 }
@@ -8,10 +9,6 @@ class User < ApplicationRecord
   validates :password_confirmation, presence: true, on: :create
   before_save :ensure_email_downcase
   has_secure_password
-
-  def ensure_user_is_admin
-    self.status == "admin_user"
-  end
 
   private
 
