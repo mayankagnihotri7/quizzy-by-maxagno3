@@ -5,7 +5,7 @@ jobs:
     parallelism: 1
 
     docker:
-      - image: circleci/ruby:2.6.5-node-browsers
+      - image: circleci/ruby:3.0.0-node-browsers
 
     #application directory change it with your application directory name
     working_directory: ~/quizzy-by-maxagno3
