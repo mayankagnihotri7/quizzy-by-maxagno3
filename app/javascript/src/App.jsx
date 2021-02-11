@@ -29,7 +29,11 @@ const App = () => {
   return (
     <Router>
       <ToastContainer />
-      {userDetails ? <AuthHeader /> : <NavBar />}
+      {userDetails?.user ? (
+        <AuthHeader firstName={userDetails.user.first_name} />
+      ) : (
+        <NavBar />
+      )}
       <Switch>
         <Route exact path="/" component={Dashboard} />
         <Route path="/login" component={Login} />
@@ -38,7 +42,7 @@ const App = () => {
   );
 };
 
-const AuthHeader = () => {
+const AuthHeader = ({ firstName }) => {
   const handleLogout = async () => {
     try {
       await authApi.logout();
@@ -57,8 +61,8 @@ const AuthHeader = () => {
             </div>
           </div>
           <div className="flex items-center justify-end">
-            <NavItem name="Create" path="/login" />
             <NavItem name="Reports" path="/login" />
+            <NavItem name={firstName} path="#" />
             <a
               className="inline-flex items-center px-1 pt-1 text-sm
              font-semibold leading-5 text-bb-gray-600 text-opacity-50
