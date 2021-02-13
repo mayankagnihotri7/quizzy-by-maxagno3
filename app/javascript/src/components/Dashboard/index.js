@@ -1,30 +1,63 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Button from "components/Button";
 import Input from "components/Input";
 import quizzesApi from "apis/quizzes";
+import TableData from "../Quiz/Table/index";
 
-const index = () => {
+const Dashboard = () => {
   const [createQuiz, setCreatQuiz] = useState(false);
+  const [quizData, setQuizData] = useState([]);
+
+  const fetchQuizDetails = async () => {
+    try {
+      const quizDetails = await quizzesApi.list();
+      setQuizData(quizDetails.data.quiz);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const destroyQuiz = async id => {
+    await quizzesApi.destroy(id);
+    await fetchQuizDetails();
+  };
+
+  useEffect(() => {
+    fetchQuizDetails();
+  }, []);
 
   return (
     <>
       {!createQuiz && (
-        <>
-          <div className="md:container md:mx-auto px-24 flex justify-end">
-            <Button
-              type="button"
-              buttonText="Add new quiz"
-              onClick={() => setCreatQuiz(true)}
-            />
-          </div>
-          <div>
-            <h1 className="text-xl leading-5 text-center">
-              You have not created any quiz.
-            </h1>
-          </div>
-        </>
+        <div className="md:container md:mx-auto px-24 flex justify-end">
+          <Button
+            type="button"
+            buttonText="Add new quiz"
+            onClick={() => setCreatQuiz(true)}
+          />
+        </div>
+      )}
+      {quizData.length === 0 && (
+        <div>
+          <h1 className="text-xl leading-5 text-center">
+            You have not created any quiz.
+          </h1>
+        </div>
       )}
       {createQuiz && <CreateQuiz />}
+      {quizData.length > 0 && (
+        <div className="container mx-auto">
+          <div className="flex flex-col mt-10 ">
+            <div className="my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
+              <div className="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8">
+                <div className="overflow-hidden border-b border-gray-200 shadow md:custom-box-shadow">
+                  <TableData quizData={quizData} destroyQuiz={destroyQuiz} />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </>
   );
 };
@@ -36,6 +69,7 @@ const CreateQuiz = () => {
     e.preventDefault();
     try {
       await quizzesApi.create({ quiz: { title } });
+      window.location.href = "/";
     } catch (error) {
       console.log(error);
     }
@@ -62,4 +96,4 @@ const CreateQuiz = () => {
   );
 };
 
-export default index;
+export default Dashboard;
