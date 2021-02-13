@@ -9,6 +9,7 @@ import NavItem from "./components/NavBar/NavItem";
 import usersApi from "apis/users";
 import authApi from "apis/auth";
 import EditQuiz from "./components/Quiz/EditQuiz";
+import SingleQuiz from "./components/Quiz/SingleQuiz/SingleQuiz";
 
 const App = () => {
   const [userDetails, setUserDetails] = useState({});
@@ -38,7 +39,8 @@ const App = () => {
       <Switch>
         <Route exact path="/" component={Dashboard} />
         <Route path="/login" component={Login} />
-        <Route path="/quizzes/:id/edit" component={EditQuiz} />
+        <Route exact path="/quizzes/:id/edit" component={EditQuiz} />
+        <Route exact path="/quizzes/:id/show" component={SingleQuiz} />
       </Switch>
     </Router>
   );
