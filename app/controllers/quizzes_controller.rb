@@ -1,19 +1,19 @@
 class QuizzesController < ApplicationController
+  before_action :logged_in?, only: [:create, :update, :destroy]
+
   def index
     quiz = Quiz.where("user_id = ?", current_user.id)
     render status: :ok, json: { quiz: quiz }
   end
 
   def create
-    if logged_in?
-      params[:quiz][:user_id] = current_user.id
-      quiz = Quiz.new(quiz_params)
+    params[:quiz][:user_id] = current_user.id
+    quiz = Quiz.new(quiz_params)
 
-      if quiz.save
-        render status: :ok, json: { notice: "Quiz has been created!" }
-      else
-        render status: :unprocessable_entity, json: { error: quiz.errors.full_messages }
-      end
+    if quiz.save
+      render status: :ok, json: { notice: "Quiz has been created!" }
+    else
+      render status: :unprocessable_entity, json: { error: quiz.errors.full_messages }
     end
   end
 
@@ -24,12 +24,10 @@ class QuizzesController < ApplicationController
 
   def update
     quiz = Quiz.find(params[:id])
-    if logged_in?
-      if quiz.update(quiz_params)
-        render status: :ok, json: { notice: "Quiz has been updated!" }
-      else
-        render status: :unprocessable_entity, json: { error: quiz.errors.full_messages }
-      end
+    if quiz.update(quiz_params)
+      render status: :ok, json: { notice: "Quiz has been updated!" }
+    else
+      render status: :unprocessable_entity, json: { error: quiz.errors.full_messages }
     end
   end
 
