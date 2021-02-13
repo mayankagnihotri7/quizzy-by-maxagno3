@@ -41,7 +41,7 @@ const Dashboard = () => {
         </div>
       )}
       {createQuiz && <CreateQuiz />}
-      {quizData.length > 0 && (
+      {quizData.length > 0 && !createQuiz && (
         <div className="container mx-auto">
           <div className="flex flex-col mt-10 ">
             <div className="my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">

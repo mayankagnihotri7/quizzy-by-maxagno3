@@ -1,5 +1,5 @@
 import React, { useMemo } from "react";
-import { useHistory } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import Table from "./Table";
 
 const TableData = ({ quizData, destroyQuiz }) => {
@@ -15,7 +15,14 @@ const TableData = ({ quizData, destroyQuiz }) => {
             accessor: "quiz.title",
             // eslint-disable-next-line react/display-name
             Cell: ({ row }) => {
-              return <h2>{row.original.title}</h2>;
+              return (
+                <Link
+                  to={`/quizzes/${row.original.id}/show`}
+                  className="hover:font-bold hover:underline"
+                >
+                  {row.original.title}
+                </Link>
+              );
             },
           },
           {
