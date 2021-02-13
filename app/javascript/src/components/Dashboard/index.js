@@ -9,12 +9,8 @@ const Dashboard = () => {
   const [quizData, setQuizData] = useState([]);
 
   const fetchQuizDetails = async () => {
-    try {
-      const quizDetails = await quizzesApi.list();
-      setQuizData(quizDetails.data.quiz);
-    } catch (error) {
-      console.log(error);
-    }
+    const quizDetails = await quizzesApi.list();
+    setQuizData(quizDetails.data.quiz);
   };
 
   const destroyQuiz = async id => {
