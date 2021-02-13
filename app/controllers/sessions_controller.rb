@@ -3,8 +3,8 @@ class SessionsController < ApplicationController
   
   def create
     user = User.find_by(email: params[:session][:email])
-    log_in(user)
-    if user && user.authenticate(params[:session][:password])
+    if user && user.administrator? && user.authenticate(params[:session][:password])
+      log_in(user)
       render status: :ok, json: { notice: "You've successfully signed in.", user: user }
     else
       render status: :unprocessable_entity, json: { error: "Invalid email/password combination" }
