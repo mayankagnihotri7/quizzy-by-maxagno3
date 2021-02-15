@@ -4,6 +4,7 @@ import quizzesApi from "apis/quizzes";
 import questionsApi from "apis/questions";
 import Button from "components/Button";
 import Input from "components/Input";
+import Select from "react-select";
 
 const SingleQuiz = () => {
   const [title, setTitle] = useState("");
@@ -18,6 +19,7 @@ const SingleQuiz = () => {
   });
   const [name, setName] = useState("");
   const [loading, setLoading] = useState(false);
+  const [correctAnswer, setCorrectAnswer] = useState("");
 
   const { id } = useParams();
 
@@ -42,10 +44,23 @@ const SingleQuiz = () => {
             { name: optionThree },
             { name: optionFour },
           ].filter(option => option.name !== ""),
+          answer: correctAnswer,
         },
       },
     });
   };
+
+  const defaultValue = {
+    value: option?.optionOne,
+    label: "Option 1",
+  };
+
+  const options = [
+    { value: option?.optionOne, label: "Option 1" },
+    { value: option?.optionTwo, label: "Option 2" },
+    { value: option?.optionThree, label: "Option 3" },
+    { value: option?.optionFour, label: "Option 4" },
+  ].filter(option => option.value !== "");
 
   useEffect(() => {
     fetchQuizDetails();
@@ -131,9 +146,24 @@ const SingleQuiz = () => {
                   + Add option
                 </button>
               )}
-              <div className="w-1/4">
-                <Button type="submit" buttonText="Submit" />
+              <div className="w-6/12">
+                <Select
+                  value={correctAnswer}
+                  options={options}
+                  onChange={e => setCorrectAnswer(e.value)}
+                  placeholder={correctAnswer}
+                  defaultValue={defaultValue}
+                />
               </div>
+              {(correctAnswer !== "" || correctAnswer !== " ") &&
+              option.optionOne &&
+              option.optionTwo ? (
+                  <div className="w-1/4">
+                    <Button type="submit" buttonText="Submit" />
+                  </div>
+                ) : (
+                  <small>Select the option first</small>
+                )}
             </div>
           </form>
         </div>
