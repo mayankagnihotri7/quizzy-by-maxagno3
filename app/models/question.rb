@@ -2,6 +2,6 @@ class Question < ApplicationRecord
   belongs_to :quiz
   validates :title, presence: true
   validates :answer, presence: true
-  has_many :options
+  has_many :options, dependent: :destroy
   accepts_nested_attributes_for :options, allow_destroy: true
 end

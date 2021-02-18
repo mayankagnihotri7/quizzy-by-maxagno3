@@ -10,6 +10,7 @@ import usersApi from "apis/users";
 import authApi from "apis/auth";
 import EditQuiz from "./components/Quiz/EditQuiz";
 import SingleQuiz from "./components/Quiz/SingleQuiz/SingleQuiz";
+import Edit from "./components/Quiz/SingleQuiz/Edit";
 
 const App = () => {
   const [userDetails, setUserDetails] = useState({});
@@ -41,6 +42,11 @@ const App = () => {
         <Route path="/login" component={Login} />
         <Route exact path="/quizzes/:id/edit" component={EditQuiz} />
         <Route exact path="/quizzes/:id/show" component={SingleQuiz} />
+        <Route
+          exact
+          path="/quizzes/:quiz_id/questions/:id/edit"
+          component={Edit}
+        />
       </Switch>
     </Router>
   );
