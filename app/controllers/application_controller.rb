@@ -21,6 +21,8 @@ class ApplicationController < ActionController::Base
   def authenticate
     unless logged_in?
       render status: :unprocessable_entity, json: { error: "Please login to continue." }
+    else
+      current_user
     end
   end
 end

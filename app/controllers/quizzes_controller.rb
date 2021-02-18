@@ -1,12 +1,13 @@
 class QuizzesController < ApplicationController
+  before_action :authenticate
+
   def index
     quiz = Quiz.where("user_id = ?", current_user.id)
     render status: :ok, json: { quiz: quiz }
   end
 
   def create
-    params[:quiz][:user_id] = current_user.id
-    quiz = Quiz.new(quiz_params)
+    quiz = current_user.quizzes.new(quiz_params)
 
     if quiz.save
       render status: :ok, json: { notice: "Quiz has been created!" }
