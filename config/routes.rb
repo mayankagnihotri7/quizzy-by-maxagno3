@@ -3,7 +3,7 @@ Rails.application.routes.draw do
   resources :users, only: [:index]
   resource :sessions, only: [:create, :destroy]
   resources :quizzes, only: [:create, :index, :destroy, :update, :show] do
-    resources :questions, only: [:create]
+    resources :questions, only: [:create, :index, :update, :show, :destroy]
   end
   get '*path', to: 'home#index', via: :all
 end

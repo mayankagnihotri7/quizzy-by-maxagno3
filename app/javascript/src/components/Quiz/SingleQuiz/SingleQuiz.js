@@ -5,6 +5,8 @@ import questionsApi from "apis/questions";
 import Button from "components/Button";
 import Input from "components/Input";
 import Select from "react-select";
+import QuestionList from "./QuestionList";
+import axios from "axios";
 
 const SingleQuiz = () => {
   const [title, setTitle] = useState("");
@@ -20,6 +22,7 @@ const SingleQuiz = () => {
   const [name, setName] = useState("");
   const [loading, setLoading] = useState(false);
   const [correctAnswer, setCorrectAnswer] = useState("");
+  const [questions, setQuestions] = useState([]);
 
   const { id } = useParams();
 
@@ -28,6 +31,11 @@ const SingleQuiz = () => {
     const quizDetails = await quizzesApi.show(id);
     setTitle(quizDetails.data.quiz.title);
     setLoading(false);
+  };
+
+  const fetchQuestionDetails = async () => {
+    const questionDetails = await axios.get(`/quizzes/${id}/questions`);
+    setQuestions(questionDetails.data);
   };
 
   const handleSubmit = async e => {
@@ -48,6 +56,7 @@ const SingleQuiz = () => {
         },
       },
     });
+    window.location.href = `/quizzes/${id}/show`;
   };
 
   const defaultValue = {
@@ -62,27 +71,47 @@ const SingleQuiz = () => {
     { value: option?.optionFour, label: "Option 4" },
   ].filter(option => option.value !== "");
 
+  const handleDestroy = async question_id => {
+    await axios.delete(`/quizzes/${id}/questions/${question_id}`);
+    fetchQuestionDetails();
+  };
+
   useEffect(() => {
     fetchQuizDetails();
+    fetchQuestionDetails();
   }, []);
 
   return (
     <div>
-      {!isAddQuestion && (
+      <>
         <div className="container mx-auto">
           <div className="flex justify-between items-baseline">
             <h1 className="font-bold text-xl pt-5">{title}</h1>
-            <Button
-              buttonText="Add questions"
-              loading={loading}
-              onClick={() => setIsAddQuestion(true)}
+            <div className="flex justify-evenly">
+              <Button
+                buttonText="Add questions"
+                loading={loading}
+                onClick={() => setIsAddQuestion(true)}
+              />
+              {!isAddQuestion && questions.length >= 1 && (
+                <Button buttonText="Publish" loading={loading} />
+              )}
+            </div>
+          </div>
+          {!isAddQuestion && questions.length === 0 && (
+            <div className="text-center p-16">
+              <h2>There are no questions in this quiz.</h2>
+            </div>
+          )}
+          {!isAddQuestion && questions && (
+            <QuestionList
+              questions={questions}
+              quizID={id}
+              handleDestroy={handleDestroy}
             />
-          </div>
-          <div className="text-center p-16">
-            <h2>There are no questions in this quiz.</h2>
-          </div>
+          )}
         </div>
-      )}
+      </>
       {isAddQuestion && (
         <div className="md:container md:mx-auto justify-start">
           <h2 className="mt-4 font-bold text-blue-400 text-xl">

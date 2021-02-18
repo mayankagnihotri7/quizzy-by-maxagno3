@@ -1,6 +1,4 @@
 class QuizzesController < ApplicationController
-  before_action :logged_in?, only: [:create, :update, :destroy]
-
   def index
     quiz = Quiz.where("user_id = ?", current_user.id)
     render status: :ok, json: { quiz: quiz }
@@ -34,7 +32,7 @@ class QuizzesController < ApplicationController
   def destroy
     quiz = Quiz.find(params[:id])
     if quiz.destroy
-      render status: :ok, json: { notice: "Task has been deleted." }
+      render status: :ok, json: { notice: "Quiz has been deleted." }
     else
       render status: :unprocessable_entity, json: { error: quiz.errors.full_messages }
     end
