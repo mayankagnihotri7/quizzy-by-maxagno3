@@ -46,8 +46,7 @@ const Edit = () => {
     window.location.href = `/quizzes/${quiz_id}/show`;
   };
 
-  const dup_options = [...options_attributes];
-  const options = dup_options.map((option, i) => {
+  const options = options_attributes.map((option, i) => {
     return { value: option?.name, label: `Option ${i + 1}` };
   });
 
