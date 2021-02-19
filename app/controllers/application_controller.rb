@@ -9,7 +9,7 @@ class ApplicationController < ActionController::Base
     end
   end
 
-  def logged_in?
+  def ensure_user_logged_in
     !current_user.nil?
   end
 
@@ -19,7 +19,7 @@ class ApplicationController < ActionController::Base
   end
 
   def authenticate
-    unless logged_in?
+    unless ensure_user_logged_in
       render status: :unprocessable_entity, json: { error: "Please login to continue." }
     else
       current_user

@@ -1,5 +1,5 @@
 class QuestionsController < ApplicationController
-  before_action :logged_in?
+  before_action :ensure_user_logged_in
   before_action :load_quiz
 
   def index
