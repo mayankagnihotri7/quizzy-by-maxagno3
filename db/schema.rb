@@ -21,7 +21,7 @@ ActiveRecord::Schema.define(version: 2021_02_18_165903) do
   end
 
   create_table "questions", force: :cascade do |t|
-    t.string "title"
+    t.string "title", null: false
     t.integer "quiz_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false

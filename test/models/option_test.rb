@@ -16,6 +16,22 @@ class OptionTest < ActiveSupport::TestCase
     end
   end
 
+  def test_options_must_have_minimum_two
+    question = @quiz.questions.create(title: "Lorem ipsum dimsum?", options_attributes: 
+                [{name: "lorem"}], answer: "lorem")
+    question.save
+    assert_not question.valid?
+    assert_equal ["Options is too short (minimum is 2 characters)"], question.errors.full_messages
+  end
+
+  def test_options_must_have_maximum_four
+    question = @quiz.questions.create(title: "Lorem ipsum dimsum?", options_attributes: 
+                [{name: "lorem"}, {name: "ipsum"}, {name: "dimsum"}, {name: "dopsum"},{name: "dopsum"}], answer: "lorem")
+    question.save
+    assert_not question.valid?
+    assert_equal ["Options is too long (maximum is 4 characters)"], question.errors.full_messages
+  end
+
   def test_option_name_must_be_present
     option = Option.new(name: "", question_id: 1)
     option.save

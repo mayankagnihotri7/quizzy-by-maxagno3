@@ -2,7 +2,7 @@ class Quiz < ApplicationRecord
   attr_accessor :generate_slug
 
   belongs_to :user
-  has_many :questions
+  has_many :questions, dependent: :destroy
   accepts_nested_attributes_for :questions
   validates :title, presence: true, length: { minimum: 10, maximum: 255}
   validates :slug, uniqueness: true
