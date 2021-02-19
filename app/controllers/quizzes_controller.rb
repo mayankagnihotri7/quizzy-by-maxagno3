@@ -1,5 +1,6 @@
 class QuizzesController < ApplicationController
-  before_action :authenticate
+  before_action :ensure_user_logged_in
+  before_action :find_quiz
 
   def index
     quiz = Quiz.where("user_id = ?", current_user.id)
@@ -16,26 +17,23 @@ class QuizzesController < ApplicationController
     end
   end
 
-  def show
-    quiz = Quiz.find(params[:id])
-    render status: :ok, json: { quiz: quiz }
+  def show  
+    render status: :ok, json: { quiz: @quiz }
   end
 
   def update
-    quiz = Quiz.find(params[:id])
-    if quiz.update(quiz_params)
+    if @quiz.update(quiz_params)
       render status: :ok, json: { notice: "Quiz has been updated!" }
     else
-      render status: :unprocessable_entity, json: { error: quiz.errors.full_messages }
+      render status: :unprocessable_entity, json: { error: @quiz.errors.full_messages }
     end
   end
 
   def destroy
-    quiz = Quiz.find(params[:id])
     if quiz.destroy
       render status: :ok, json: { notice: "Quiz has been deleted." }
     else
-      render status: :unprocessable_entity, json: { error: quiz.errors.full_messages }
+      render status: :unprocessable_entity, json: { error: @quiz.errors.full_messages }
     end
   end
 
@@ -43,5 +41,9 @@ class QuizzesController < ApplicationController
 
     def quiz_params
       params.require(:quiz).permit(:title, :user_id, :public_url)
+    end
+
+    def find_quiz
+      @quiz = Quiz.find_by(id: params[:id])
     end
 end
