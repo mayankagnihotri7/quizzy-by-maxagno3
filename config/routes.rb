@@ -5,5 +5,6 @@ Rails.application.routes.draw do
   resources :quizzes, only: [:create, :index, :destroy, :update, :show] do
     resources :questions, only: [:create, :index, :update, :show, :destroy]
   end
+  resources :public, only: [:show], param: :slug
   get '*path', to: 'home#index', via: :all
 end
