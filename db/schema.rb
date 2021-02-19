@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_02_18_165903) do
+ActiveRecord::Schema.define(version: 2021_02_19_151508) do
 
   create_table "options", force: :cascade do |t|
     t.string "name", null: false
@@ -35,7 +35,7 @@ ActiveRecord::Schema.define(version: 2021_02_18_165903) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.string "slug", null: false
-    t.string "public_url"
+    t.boolean "public_url", default: false
     t.index ["user_id"], name: "index_quizzes_on_user_id"
   end
 

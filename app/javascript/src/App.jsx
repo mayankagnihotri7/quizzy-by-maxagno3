@@ -48,7 +48,7 @@ const App = () => {
           path="/quizzes/:quiz_id/questions/:id/edit"
           component={Edit}
         />
-        <Route exact path="/public/:slug" component={Public} />
+        <Route exact path="/public/:slug/attempts/new" component={Public} />
       </Switch>
     </Router>
   );

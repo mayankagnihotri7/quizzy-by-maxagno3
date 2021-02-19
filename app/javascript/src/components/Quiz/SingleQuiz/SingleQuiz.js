@@ -77,8 +77,7 @@ const SingleQuiz = () => {
   };
 
   const generatePublicURL = async () => {
-    const public_url = window.location.origin + `/public/${quiz.slug}`;
-    await axios.put(`/quizzes/${id}`, { id, quiz: { public_url } });
+    await axios.put(`/quizzes/${id}`, { id, quiz: { public_url: true } });
     fetchQuizDetails();
   };
 
@@ -86,6 +85,8 @@ const SingleQuiz = () => {
     fetchQuizDetails();
     fetchQuestionDetails();
   }, []);
+
+  const public_url = window.location.origin + `/public/${quiz.slug}`;
 
   return (
     <div>
@@ -101,7 +102,7 @@ const SingleQuiz = () => {
               />
               {!isAddQuestion &&
                 questions.length >= 1 &&
-                quiz.public_url === null && (
+                quiz.public_url === false && (
                 <Button
                   buttonText="Publish"
                   loading={loading}
@@ -110,11 +111,11 @@ const SingleQuiz = () => {
               )}
             </div>
           </div>
-          {quiz.public_url && (
+          {quiz.public_url === true && (
             <h2>
               &#10003; Published, your public link is -
-              <Link to={quiz.public_url} className="text-bb-purple ml-1">
-                {quiz.public_url}
+              <Link to={public_url} className="text-bb-purple ml-1">
+                {public_url}
               </Link>
             </h2>
           )}
