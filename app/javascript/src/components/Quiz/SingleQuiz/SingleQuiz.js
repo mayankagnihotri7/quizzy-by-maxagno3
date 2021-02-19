@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import quizzesApi from "apis/quizzes";
 import questionsApi from "apis/questions";
 import Button from "components/Button";
@@ -9,7 +9,6 @@ import QuestionList from "./QuestionList";
 import axios from "axios";
 
 const SingleQuiz = () => {
-  const [title, setTitle] = useState("");
   const [isAddQuestion, setIsAddQuestion] = useState(false);
   const [isAddOption, setIsAddOption] = useState(false);
   const [addOptionCount, setAddOptionCount] = useState(0);
@@ -23,13 +22,14 @@ const SingleQuiz = () => {
   const [loading, setLoading] = useState(false);
   const [correctAnswer, setCorrectAnswer] = useState("");
   const [questions, setQuestions] = useState([]);
+  const [quiz, setQuiz] = useState({});
 
   const { id } = useParams();
 
   const fetchQuizDetails = async () => {
     setLoading(true);
     const quizDetails = await quizzesApi.show(id);
-    setTitle(quizDetails.data.quiz.title);
+    setQuiz(quizDetails.data.quiz);
     setLoading(false);
   };
 
@@ -76,6 +76,12 @@ const SingleQuiz = () => {
     fetchQuestionDetails();
   };
 
+  const generatePublicURL = async () => {
+    const public_url = window.location.origin + `/public/${quiz.slug}`;
+    await axios.put(`/quizzes/${id}`, { id, quiz: { public_url } });
+    fetchQuizDetails();
+  };
+
   useEffect(() => {
     fetchQuizDetails();
     fetchQuestionDetails();
@@ -86,18 +92,32 @@ const SingleQuiz = () => {
       <>
         <div className="container mx-auto">
           <div className="flex justify-between items-baseline">
-            <h1 className="font-bold text-xl pt-5">{title}</h1>
+            <h1 className="font-bold text-xl pt-5">{quiz.title}</h1>
             <div className="flex justify-evenly">
               <Button
                 buttonText="Add questions"
                 loading={loading}
                 onClick={() => setIsAddQuestion(true)}
               />
-              {!isAddQuestion && questions.length >= 1 && (
-                <Button buttonText="Publish" loading={loading} />
+              {!isAddQuestion &&
+                questions.length >= 1 &&
+                quiz.public_url === null && (
+                <Button
+                  buttonText="Publish"
+                  loading={loading}
+                  onClick={generatePublicURL}
+                />
               )}
             </div>
           </div>
+          {quiz.public_url && (
+            <h2>
+              &#10003; Published, your public link is -
+              <Link to={quiz.public_url} className="text-bb-purple ml-1">
+                {quiz.public_url}
+              </Link>
+            </h2>
+          )}
           {!isAddQuestion && questions.length === 0 && (
             <div className="text-center p-16">
               <h2>There are no questions in this quiz.</h2>

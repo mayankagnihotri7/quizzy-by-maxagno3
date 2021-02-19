@@ -11,6 +11,7 @@ import authApi from "apis/auth";
 import EditQuiz from "./components/Quiz/EditQuiz";
 import SingleQuiz from "./components/Quiz/SingleQuiz/SingleQuiz";
 import Edit from "./components/Quiz/SingleQuiz/Edit";
+import Public from "./components/Public/Public";
 
 const App = () => {
   const [userDetails, setUserDetails] = useState({});
@@ -47,6 +48,7 @@ const App = () => {
           path="/quizzes/:quiz_id/questions/:id/edit"
           component={Edit}
         />
+        <Route exact path="/public/:slug" component={Public} />
       </Switch>
     </Router>
   );
