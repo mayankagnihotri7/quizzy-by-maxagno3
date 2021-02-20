@@ -5,18 +5,16 @@ class Quiz < ApplicationRecord
   has_many :questions, dependent: :destroy
   accepts_nested_attributes_for :questions
   validates :title, presence: true, length: { minimum: 10, maximum: 255}
-  validates :slug, uniqueness: true
-  before_validation :generate_slug
+  validates :slug, uniqueness: true, allow_nil: true
 
   def to_param
     slug
   end
 
-  private
-    def generate_slug
-      Quiz.last ? next_id = (Quiz.last.id + 1).to_s : next_id = "1"
-      if slug.blank?
-        self.slug = title.downcase.strip.gsub(/\s+/, "-") + "-" + next_id
-      end
+  def generate_slug
+    Quiz.last ? next_id = (Quiz.last.id).to_s : next_id = "1"
+    if slug.blank?
+      self.slug = title.downcase.strip.gsub(/\s+/, "-") + "-" + next_id
     end
+  end
 end
