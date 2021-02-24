@@ -46,7 +46,7 @@ const TableData = ({ quizData, destroyQuiz }) => {
                     ri-delete-bin-5-line hover:text-bb-red"
                     onClick={() =>
                       window.confirm(
-                        "Are you sure you wish to clear the page?"
+                        "Are you sure you wish to delete the quiz?"
                       ) && destroyQuiz(row.original.id)
                     }
                   >

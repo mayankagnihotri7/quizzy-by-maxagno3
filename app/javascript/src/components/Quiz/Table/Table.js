@@ -14,9 +14,9 @@ const Table = ({ columns, data }) => {
   return (
     <table {...getTableProps()} className="min-w-full divide-y divide-gray-200">
       <thead>
-        {headerGroups.map(headerGroup => (
+        {headerGroups?.map(headerGroup => (
           <tr {...headerGroup.getHeaderGroupProps()} key={uuid()}>
-            {headerGroup.headers.map(column => (
+            {headerGroup.headers?.map(column => (
               <th
                 {...column.getHeaderProps()}
                 className="px-6 py-3 text-xs font-bold
@@ -34,11 +34,11 @@ const Table = ({ columns, data }) => {
         {...getTableBodyProps()}
         className="bg-white divide-y divide-gray-200"
       >
-        {rows.map((row, i) => {
+        {rows?.map((row, i) => {
           prepareRow(row);
           return (
             <tr {...row.getRowProps()} key={uuid()}>
-              {row.cells.map(cell => {
+              {row.cells?.map(cell => {
                 return (
                   <td
                     {...cell.getCellProps()}

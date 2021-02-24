@@ -14,6 +14,11 @@ class AttemptsController < ApplicationController
     end
   end
 
+  def index
+    attempt = Attempt.load_report
+    render status: :ok, json: { attempt: attempt }
+  end
+
   def update
     attempt = Attempt.find_by(quiz_id: attempt_params[:quiz_id], user_id: attempt_params[:user_id])
     if attempt.submitted?
