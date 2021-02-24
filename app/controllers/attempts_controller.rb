@@ -3,13 +3,13 @@ class AttemptsController < ApplicationController
 
   def create
     @user = User.find_by(email: params[:attempt][:email])
-    @attempt = @user.attempts.find_by(quiz_id: @quiz.id)
     if @user.nil?
       user = User.new(user_params)
       user.save
       user.attempts.create(quiz_id: @quiz.id)
-      render status: :ok, json: { user: user, quiz_title: @quiz.title, quiz_id: @quiz.id, submitted: attempt.submitted }
+      render status: :ok, json: { user: user, quiz_title: @quiz.title, quiz_id: @quiz.id, submitted: false }
     else
+      @attempt = @user.attempts.find_by(quiz_id: @quiz.id)
       render status: :ok, json: { user: @user, quiz_title: @quiz.title, quiz_id: @quiz.id, submitted: @attempt.submitted }
     end
   end
