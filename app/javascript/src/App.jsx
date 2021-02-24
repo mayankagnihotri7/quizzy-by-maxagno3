@@ -12,9 +12,11 @@ import EditQuiz from "./components/Quiz/EditQuiz";
 import SingleQuiz from "./components/Quiz/SingleQuiz/SingleQuiz";
 import Edit from "./components/Quiz/SingleQuiz/Edit";
 import Public from "./components/Public/Public";
+import PrivateRoute from "./components/Common/PrivateRoute";
 
-const App = () => {
+const App = props => {
   const [userDetails, setUserDetails] = useState({});
+  const isLoggedIn = userDetails !== "";
 
   const fetchUserDetails = async () => {
     try {
@@ -39,16 +41,34 @@ const App = () => {
         <NavBar />
       )}
       <Switch>
-        <Route exact path="/" component={Dashboard} />
         <Route path="/login" component={Login} />
-        <Route exact path="/quizzes/:id/edit" component={EditQuiz} />
-        <Route exact path="/quizzes/:id/show" component={SingleQuiz} />
-        <Route
+        <Route exact path="/public/:slug/attempts/new" component={Public} />
+        <PrivateRoute
+          exact
+          path="/"
+          redirectRoute="/login"
+          condition={isLoggedIn}
+          component={Dashboard}
+        />
+        <PrivateRoute
+          path="/quizzes/:id/edit"
+          redirectRoute="/login"
+          condition={isLoggedIn}
+          component={EditQuiz}
+        />
+        <PrivateRoute
+          path="/quizzes/:id/show"
+          redirectRoute="/login"
+          condition={isLoggedIn}
+          component={SingleQuiz}
+        />
+        <PrivateRoute
           exact
           path="/quizzes/:quiz_id/questions/:id/edit"
+          redirectRoute="/login"
+          condition={isLoggedIn}
           component={Edit}
         />
-        <Route exact path="/public/:slug/attempts/new" component={Public} />
       </Switch>
     </Router>
   );
@@ -58,6 +78,7 @@ const AuthHeader = ({ firstName }) => {
   const handleLogout = async () => {
     try {
       await authApi.logout();
+      window.location.href = "/";
     } catch (error) {
       console.log(error);
     }

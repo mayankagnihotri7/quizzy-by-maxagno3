@@ -7,7 +7,6 @@ const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
-  const history = useHistory();
 
   const handleSubmit = async e => {
     e.preventDefault();
@@ -15,7 +14,7 @@ const Login = () => {
       setLoading(true);
       await authApi.login({ session: { email, password } });
       setLoading(false);
-      history.push("/");
+      window.location.href = "/";
     } catch (error) {
       console.log(error);
     }
