@@ -13,6 +13,7 @@ import SingleQuiz from "./components/Quiz/SingleQuiz/SingleQuiz";
 import Edit from "./components/Quiz/SingleQuiz/Edit";
 import Public from "./components/Public/Public";
 import PrivateRoute from "./components/Common/PrivateRoute";
+import Reports from "./components/Reports/Reports";
 
 const App = props => {
   const [userDetails, setUserDetails] = useState({});
@@ -49,6 +50,13 @@ const App = props => {
           redirectRoute="/login"
           condition={isLoggedIn}
           component={Dashboard}
+        />
+        <PrivateRoute
+          exact
+          path="/reports"
+          redirectRoute="/login"
+          condition={isLoggedIn}
+          component={Reports}
         />
         <PrivateRoute
           path="/quizzes/:id/edit"
@@ -94,7 +102,7 @@ const AuthHeader = ({ firstName }) => {
             </div>
           </div>
           <div className="flex items-center justify-end">
-            <NavItem name="Reports" path="/login" />
+            <NavItem name="Reports" path="/reports" />
             <NavItem name={firstName} path="#" />
             <a
               className="inline-flex items-center px-1 pt-1 text-sm

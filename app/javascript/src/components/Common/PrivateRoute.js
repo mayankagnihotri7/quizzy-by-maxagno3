@@ -8,10 +8,6 @@ const PrivateRoute = ({
   redirectRoute,
   ...props
 }) => {
-  console.log(
-    { component: Component, condition, path, redirectRoute },
-    "props"
-  );
   if (condition === false) {
     return (
       <Redirect
