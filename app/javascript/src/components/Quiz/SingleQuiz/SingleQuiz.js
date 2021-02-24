@@ -112,7 +112,7 @@ const SingleQuiz = () => {
           {quiz.slug && (
             <h2>
               &#10003; Published, your public link is -
-              <Link to={public_url} className="text-bb-purple ml-1">
+              <Link to={`/public/${quiz.slug}`} className="text-bb-purple ml-1">
                 {public_url}
               </Link>
             </h2>

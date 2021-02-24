@@ -3,6 +3,7 @@ class Quiz < ApplicationRecord
 
   belongs_to :user
   has_many :questions, dependent: :destroy
+  has_many :attempts, dependent: :destroy
   accepts_nested_attributes_for :questions
   validates :title, presence: true, length: { minimum: 10, maximum: 255}
   validates :slug, uniqueness: true, allow_nil: true
