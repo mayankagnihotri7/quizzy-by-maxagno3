@@ -10,7 +10,6 @@ class Question < ApplicationRecord
   def correct_answer
     answer = options.select do |option|
       option[:name]
-    end
-    answer[0].name
+    end.first.name
   end
 end

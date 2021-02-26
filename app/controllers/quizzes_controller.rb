@@ -3,7 +3,7 @@ class QuizzesController < ApplicationController
   before_action :find_quiz
 
   def index
-    quiz = Quiz.where("user_id = ?", current_user.id)
+    quiz = current_user.quizzes
     render status: :ok, json: { quiz: quiz }
   end
 
