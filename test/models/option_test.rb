@@ -32,6 +32,20 @@ class OptionTest < ActiveSupport::TestCase
     assert_equal ["Options is too long (maximum is 4 characters)"], question.errors.full_messages
   end
 
+  def test_options_can_have_two_options
+    question = @quiz.questions.create(title: "Lorem ipsum dimsum?", options_attributes: 
+                [{name: "lorem"}, {name: "lorem"}], answer: "lorem")
+    question.save
+    assert question.valid?
+  end
+
+  def test_options_can_have_four_options
+    question = @quiz.questions.create(title: "Lorem ipsum dimsum?", options_attributes: 
+                [{name: "lorem"}, {name: "ipsum"}, {name: "simsum"}, {name: "dimsum"}], answer: "lorem")
+    question.save
+    assert question.valid?
+  end
+
   def test_option_name_must_be_present
     option = Option.new(name: "", question_id: 1)
     option.save
