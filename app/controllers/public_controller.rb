@@ -2,7 +2,7 @@ class PublicController < ApplicationController
   before_action :load_quiz
 
   def show
-    if @quiz.slug.present?
+    if @quiz.slug
       redirect_to "/public/#{@quiz.slug}/attempts/new"
     else
       render status: :unprocessable_entity, json: { error: "Please check the url and try again." }
