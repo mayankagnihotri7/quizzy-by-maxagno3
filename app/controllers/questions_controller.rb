@@ -1,6 +1,7 @@
 class QuestionsController < ApplicationController
   before_action :authenticate
   before_action :load_quiz
+  before_action :find_quiz, only: [:update, :show, :destroy]
 
   def index
     question = @quiz.questions
@@ -17,30 +18,28 @@ class QuestionsController < ApplicationController
   end
 
   def update
-    question = @quiz.questions.find_by(id: params[:id])
-    
-    if question.update(question_params)
+    if @question.update(question_params)
       render status: :ok, json: { notice: "Question has been updated" }
+    elsif !@question
+      render status: :not_found, json: { error: "Question not found." }
     else
       render status: :unprocessable_entity, json: { error: @quiz.errors.full_messages }
     end
   end
 
   def show
-    question = @quiz.questions.find_by(id: params[:id])
-    if question
-      render status: :ok, json: { question: question, options: question.options }
+    if @question
+      render status: :ok, json: { question: @question, options: @question.options }
     else
-      render status: :unprocessable_entity, json: { error: question.errors.full_messages }
+      render status: :unprocessable_entity, json: { error: @question.errors.full_messages }
     end
   end
 
   def destroy
-    question = @quiz.questions.find_by(id: params[:id])
-    if question.destroy
+    if @question.destroy
       render status: :ok, json: { notice: "Question deleted!" }
     else
-      render status: :unprocessable_entity, json: { error: question.errors.full_messages }
+      render status: :unprocessable_entity, json: { error: @question.errors.full_messages }
     end
   end
 
@@ -52,5 +51,9 @@ class QuestionsController < ApplicationController
 
     def load_quiz
       @quiz = Quiz.find_by!(id: params[:quiz_id])
+    end
+
+    def find_quiz
+      @question = @quiz.questions.find_by(id: params[:id])
     end
 end
