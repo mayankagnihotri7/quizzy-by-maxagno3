@@ -29,12 +29,6 @@ class QuizzesController < ApplicationController
     end
   end
 
-  def publish
-    @quiz.generate_slug
-    @quiz.save
-    render status: :ok, json: { notice: "Quiz has been published!" }
-  end
-
   def destroy
     if @quiz.destroy
       render status: :ok, json: { notice: "Quiz has been deleted." }
