@@ -54,6 +54,8 @@ const Edit = () => {
     fetchQuestionDetails();
   }, []);
 
+  console.log(options_attributes, "options attributes here!");
+
   return (
     <div className="container mx-auto">
       <form onSubmit={handleSubmit}>
@@ -65,7 +67,7 @@ const Edit = () => {
           />
           {options_attributes?.map((option, i) => {
             return (
-              <div key={`${options_attributes.length * 13 + 9}`}>
+              <div key={i}>
                 <div className="flex items-baseline">
                   <Input
                     label={`Option ${i + 1}`}
