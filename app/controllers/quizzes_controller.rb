@@ -1,5 +1,5 @@
 class QuizzesController < ApplicationController
-  before_action :authenticate
+  before_action :authenticate_user
   before_action :find_quiz
 
   def index

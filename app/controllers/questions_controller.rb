@@ -1,5 +1,5 @@
 class QuestionsController < ApplicationController
-  before_action :authenticate
+  before_action :authenticate_user
   before_action :load_quiz
   before_action :find_quiz, only: [:update, :show, :destroy]
 
