@@ -33,6 +33,13 @@ gem 'react-rails'
 # Rexml gem
 gem 'rexml'
 
+# Create excel file
+gem "rubyzip"
+gem 'caxlsx'
+
+# Sidekiq
+gem "sidekiq"
+
 # Use Active Storage variant
 # gem 'image_processing', '~> 1.2'
 
