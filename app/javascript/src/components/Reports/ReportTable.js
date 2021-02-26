@@ -12,7 +12,6 @@ const ReportTable = ({ report }) => {
             accessor: "attempt.quiz_name",
             // eslint-disable-next-line react/display-name
             Cell: ({ row }) => {
-              console.log(row, "rowing");
               return <h1>{row.original.quiz_name}</h1>;
             },
           },

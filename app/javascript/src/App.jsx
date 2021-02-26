@@ -14,8 +14,9 @@ import Edit from "./components/Quiz/SingleQuiz/Edit";
 import Public from "./components/Public/Public";
 import PrivateRoute from "./components/Common/PrivateRoute";
 import Reports from "./components/Reports/Reports";
+import DownloadReport from "./components/Reports/DownloadReport";
 
-const App = props => {
+const App = () => {
   const [userDetails, setUserDetails] = useState({});
   const isLoggedIn = userDetails !== "";
 
@@ -57,6 +58,13 @@ const App = props => {
           redirectRoute="/login"
           condition={isLoggedIn}
           component={Reports}
+        />
+        <PrivateRoute
+          exact
+          path="/reports/download"
+          redirectRoute="/login"
+          condition={isLoggedIn}
+          component={DownloadReport}
         />
         <PrivateRoute
           path="/quizzes/:id/edit"
