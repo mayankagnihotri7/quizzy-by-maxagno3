@@ -27,7 +27,7 @@ class Attempt < ApplicationRecord
   end
 
   def self.load_report
-    attempts = Attempt.where("submitted = ?", true)
+    attempts = Attempt.where("is_submitted = ?", true)
     report = []
     attempts.each do |attempt|
       quiz = attempt.quiz

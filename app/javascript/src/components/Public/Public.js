@@ -18,7 +18,7 @@ const Public = () => {
   const [questions, setQuestions] = useState([]);
 
   const fetchQuizDetails = async () => {
-    const { data } = await axios.get(`/publics/${slug}`);
+    const { data } = await axios.patch(`/public/${slug}`);
     setQuestions(data);
   };
 
@@ -122,7 +122,7 @@ const ShowQuestion = ({ user, quiz, questions, slug }) => {
       payload: {
         user_id: user.id,
         quiz_id: quiz.quizId,
-        submitted: true,
+        is_submitted: true,
         attempt_answers_attributes: answers,
       },
     });

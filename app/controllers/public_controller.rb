@@ -9,14 +9,9 @@ class PublicController < ApplicationController
     end
   end
 
-  def verified
+  def update
     question = @quiz.questions
     render status: :ok, json: question.to_json( only: [:id, :title, :answer], include: [:options] )
-  end
-
-  def create
-    question = @quiz.questions.find_by(id: params[:question_id])
-    question.attempt_answers.create(attempt_id: params[:option_id])
   end
 
   private
