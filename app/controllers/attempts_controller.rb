@@ -3,14 +3,19 @@ class AttemptsController < ApplicationController
 
   def create
     @user = User.find_by(email: params[:attempt][:email])
-    if @user.nil?
+    if !@user
       user = User.new(user_params)
       user.save
       user.attempts.create(quiz_id: @quiz.id)
       render status: :ok, json: { user: user, quiz_title: @quiz.title, quiz_id: @quiz.id, submitted: false }
     else
       @attempt = @user.attempts.find_by(quiz_id: @quiz.id)
-      render status: :ok, json: { user: @user, quiz_title: @quiz.title, quiz_id: @quiz.id, submitted: @attempt.submitted }
+      if @attempt && @attempt.is_submitted?
+        render status: :unprocessable_entity, json: { notice: "You have already attempted this quiz." }
+      else
+        user_attempt = @user.attempts.create(quiz_id: @quiz.id)
+        render status: :ok, json: { user: @user, quiz_title: @quiz.title, quiz_id: @quiz.id, submitted: user_attempt.is_submitted }
+      end
     end
   end
 
@@ -21,14 +26,10 @@ class AttemptsController < ApplicationController
 
   def update
     attempt = Attempt.find_by(quiz_id: attempt_params[:quiz_id], user_id: attempt_params[:user_id])
-    if attempt.submitted?
-      render json: { correct_answer: attempt.correct_answer_count, incorrect_answer: attempt.incorrect_answer_count, notice: "You have already attempted this quiz." }
+    if attempt.update(attempt_params)
+      render json: { correct_answer: attempt.correct_answer_count, incorrect_answer: attempt.incorrect_answer_count, notice: "You have submitted the quiz." }
     else
-      if attempt.update(attempt_params)
-        render json: { correct_answer: attempt.correct_answer_count, incorrect_answer: attempt.incorrect_answer_count, notice: "You have submitted the quiz." }
-      else
-        render status: :unprocessable_entity, json: { error: attempt.errors.full_messages }
-      end
+      render status: :unprocessable_entity, json: { error: attempt.errors.full_messages }
     end
   end
 
@@ -39,7 +40,7 @@ class AttemptsController < ApplicationController
     end
 
     def attempt_params
-      params.require(:attempt).permit(:quiz_id, :user_id, :submitted, attempt_answers_attributes: [:option_id, :question_id])
+      params.require(:attempt).permit(:quiz_id, :user_id, :is_submitted, attempt_answers_attributes: [:option_id, :question_id])
     end
 
     def load_quiz

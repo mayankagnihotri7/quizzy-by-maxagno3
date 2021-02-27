@@ -9,6 +9,5 @@ Rails.application.routes.draw do
   resources :attempts, param: :slug
   resource :reports_downloads, only: [:create, :show]
   patch "/quizzes/:id/publish", to: "publish#publish"
-  get "/publics/:slug", to: "public#verified"
   get '*path', to: 'home#index', via: :all
 end
