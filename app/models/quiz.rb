@@ -13,9 +13,19 @@ class Quiz < ApplicationRecord
   end
 
   def generate_slug
-    Quiz.last ? next_id = (Quiz.last.id).to_s : next_id = "1"
-    if slug.blank?
-      self.slug = title.downcase.strip.gsub(/\s+/, "-") + "-" + next_id
+    self.slug = unique_slug
+  end
+
+  def unique_slug
+    occurence = 1
+    loop do
+      if occurence > 1
+        slug = "#{title.parameterize}-#{occurence}"
+      else
+        slug = "#{title.parameterize}"
+      end
+      break slug unless Quiz.where(slug: slug).exists?
+      occurence = occurence + 1
     end
   end
 end
