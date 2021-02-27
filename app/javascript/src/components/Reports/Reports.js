@@ -11,7 +11,7 @@ const Reports = () => {
 
   const fetchAttemptDetails = async () => {
     setLoading(true);
-    const attemptDetail = await axios.get("/attempts");
+    const attemptDetail = await axios.get("/reports");
     setLoading(false);
     setReport(attemptDetail.data?.attempt);
   };

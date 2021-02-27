@@ -54,7 +54,7 @@ const App = () => {
         />
         <PrivateRoute
           exact
-          path="/reports"
+          path="/dashboard/reports"
           redirectRoute="/login"
           condition={isLoggedIn}
           component={Reports}
@@ -110,7 +110,7 @@ const AuthHeader = ({ firstName }) => {
             </div>
           </div>
           <div className="flex items-center justify-end">
-            <NavItem name="Reports" path="/reports" />
+            <NavItem name="Reports" path="/dashboard/reports" />
             <NavItem name={firstName} path="#" />
             <a
               className="inline-flex items-center px-1 pt-1 text-sm
