@@ -14,7 +14,7 @@ class Attempt < ApplicationRecord
     attempt_answers.count do |answer|
       @question = Question.find_by(id: answer.question_id)
       @option = Option.find_by(id: answer.option_id)
-      @option.name == @question.correct_answer
+      @option.name == @question.answer
     end
   end
 
@@ -22,7 +22,7 @@ class Attempt < ApplicationRecord
     attempt_answers.count do |answer|
       @question = Question.find_by(id: answer.question_id)
       @option = Option.find_by(id: answer.option_id)
-      @option.name != @question.correct_answer
+      @option.name != @question.answer
     end
   end
 
