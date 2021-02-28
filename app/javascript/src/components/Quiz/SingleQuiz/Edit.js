@@ -6,14 +6,17 @@ import { useParams } from "react-router-dom";
 import axios from "axios";
 import uuid from "react-uuid";
 import questionsApi from "apis/questions";
+import Loader from "../../Common/Loader";
 
 const Edit = () => {
   const [correctAnswer, setCorrectAnswer] = useState("");
   const [options_attributes, setOptionsAttributes] = useState([]);
   const [title, setTitle] = useState("");
   const { quiz_id, id } = useParams();
+  const [loading, setLoading] = useState(false);
 
   const fetchQuestionDetails = async () => {
+    setLoading(true);
     const questionDetails = await axios.get(
       `/quizzes/${quiz_id}/questions/${id}`
     );
@@ -23,6 +26,7 @@ const Edit = () => {
       return { id: data.id, name: data.name };
     });
     setOptionsAttributes(newData);
+    setLoading(false);
   };
 
   const handleChange = (index, e) => {
@@ -54,7 +58,9 @@ const Edit = () => {
     fetchQuestionDetails();
   }, []);
 
-  console.log(options_attributes, "options attributes here!");
+  if (loading) {
+    return <Loader />;
+  }
 
   return (
     <div className="container mx-auto">

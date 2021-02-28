@@ -6,6 +6,7 @@ import Button from "components/Button";
 import uuid from "react-uuid";
 import attemptsApi from "apis/attempts";
 import { Radio, RadioGroup } from "react-radio-group";
+import Loader from "../Common/Loader";
 
 const Public = () => {
   const { slug } = useParams();
@@ -16,10 +17,13 @@ const Public = () => {
   const [user, setUser] = useState();
   const [quiz, setQuiz] = useState({});
   const [questions, setQuestions] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   const fetchQuizDetails = async () => {
+    setLoading(true);
     const { data } = await axios.patch(`/public/${slug}`);
     setQuestions(data);
+    setLoading(false);
   };
 
   const handleSubmit = async e => {
@@ -41,6 +45,10 @@ const Public = () => {
   useEffect(() => {
     fetchQuizDetails();
   }, []);
+
+  if (loading) {
+    return <Loader />;
+  }
 
   return (
     <>
