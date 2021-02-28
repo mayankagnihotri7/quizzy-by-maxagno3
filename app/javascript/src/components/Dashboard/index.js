@@ -3,14 +3,18 @@ import Button from "components/Button";
 import Input from "components/Input";
 import quizzesApi from "apis/quizzes";
 import TableData from "../Quiz/Table/index";
+import Loader from "../Common/Loader";
 
 const Dashboard = () => {
   const [createQuiz, setCreatQuiz] = useState(false);
   const [quizData, setQuizData] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   const fetchQuizDetails = async () => {
+    setLoading(true);
     const quizDetails = await quizzesApi.list();
     setQuizData(quizDetails.data.quiz);
+    setLoading(false);
   };
 
   const destroyQuiz = async id => {
@@ -21,6 +25,10 @@ const Dashboard = () => {
   useEffect(() => {
     fetchQuizDetails();
   }, []);
+
+  if (loading) {
+    return <Loader />;
+  }
 
   return (
     <>

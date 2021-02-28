@@ -7,6 +7,7 @@ import Input from "components/Input";
 import Select from "react-select";
 import QuestionList from "./QuestionList";
 import axios from "axios";
+import Loader from "../../Common/Loader";
 
 const SingleQuiz = () => {
   const [isAddQuestion, setIsAddQuestion] = useState(false);
@@ -34,8 +35,10 @@ const SingleQuiz = () => {
   };
 
   const fetchQuestionDetails = async () => {
+    setLoading(true);
     const questionDetails = await axios.get(`/quizzes/${id}/questions`);
     setQuestions(questionDetails.data);
+    setLoading(false);
   };
 
   const handleSubmit = async e => {
@@ -85,6 +88,10 @@ const SingleQuiz = () => {
     fetchQuizDetails();
     fetchQuestionDetails();
   }, []);
+
+  if (loading) {
+    return <Loader />;
+  }
 
   const public_url = window.location.origin + `/public/${quiz.slug}`;
 
