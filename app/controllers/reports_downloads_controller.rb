@@ -1,6 +1,5 @@
 class ReportsDownloadsController < ApplicationController
   def create
-    puts reports_exists?, "++reports exists or not"
     if reports_exists?
       File.delete("public/report.xlsx")
     end
