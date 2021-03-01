@@ -1,7 +1,7 @@
 class QuestionsController < ApplicationController
   before_action :authenticate_user
   before_action :load_quiz
-  before_action :find_quiz, only: [:update, :show, :destroy]
+  before_action :load_question, only: [:update, :show, :destroy]
 
   def index
     question = @quiz.questions
@@ -20,8 +20,6 @@ class QuestionsController < ApplicationController
   def update
     if @question.update(question_params)
       render status: :ok, json: { notice: "Question has been updated" }
-    elsif !@question
-      render status: :not_found, json: { error: "Question not found." }
     else
       render status: :unprocessable_entity, json: { error: @quiz.errors.full_messages }
     end
@@ -53,7 +51,7 @@ class QuestionsController < ApplicationController
       @quiz = Quiz.find_by!(id: params[:quiz_id])
     end
 
-    def find_quiz
-      @question = @quiz.questions.find_by(id: params[:id])
+    def load_question
+      @question = @quiz.questions.find_by!(id: params[:id])
     end
 end
