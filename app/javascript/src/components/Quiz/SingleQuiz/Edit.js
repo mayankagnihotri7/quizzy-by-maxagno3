@@ -19,7 +19,7 @@ const Edit = () => {
       `/quizzes/${quiz_id}/questions/${id}`
     );
     setTitle(questionDetails.data.question.title);
-    setCorrectAnswer(questionDetails.data.question.answer);
+    setCorrectAnswer(questionDetails.data.question?.answer);
     const newData = questionDetails.data.options.map(data => {
       return { id: data.id, name: data.name };
     });
@@ -54,8 +54,6 @@ const Edit = () => {
     setOptions(newArr);
     setOptionsAttributes(newArr);
   };
-
-  console.log(options_attributes, "from the edit form");
 
   const handleSubmit = async e => {
     e.preventDefault();
