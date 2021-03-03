@@ -152,7 +152,7 @@ const ShowQuestion = ({ user, quiz, questions, slug }) => {
       )}
       <h2>Question</h2>
       <form onSubmit={handleSubmit}>
-        {questions?.map(({ title, options, id, answer }) => {
+        {questions?.map(({ title, options, id, answer }, index) => {
           return (
             <div key={uuid()}>
               <h2 className="mt-3">{title}</h2>
@@ -176,7 +176,9 @@ const ShowQuestion = ({ user, quiz, questions, slug }) => {
                           disabled={submitted === true}
                           className="pr-4 mr-2 relative"
                         />
-                        <span>{option.name}</span>
+                        <span className={() => handleStyle(option.id)}>
+                          {option.name}
+                        </span>
                       </label>
                       {submitted && answer === option.name && (
                         <span className="text-green-600 font-bold text-sm items-baseline mt-1 ml-4">
@@ -190,15 +192,17 @@ const ShowQuestion = ({ user, quiz, questions, slug }) => {
             </div>
           );
         })}
-        <div
-          className="w-1/5 ml-10"
-          style={{
-            width: "10%",
-            boxShadow: "7px 7px 5px 0px rgba(0,0,0,0.75)",
-          }}
-        >
-          <Button type="submit" buttonText="Submit" />
-        </div>
+        {!submitted && (
+          <div
+            className="w-1/5 ml-10"
+            style={{
+              width: "10%",
+              boxShadow: "7px 7px 5px 0px rgba(0,0,0,0.75)",
+            }}
+          >
+            <Button type="submit" buttonText="Submit" />
+          </div>
+        )}
       </form>
     </div>
   );
