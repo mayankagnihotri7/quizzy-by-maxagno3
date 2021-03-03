@@ -190,15 +190,17 @@ const ShowQuestion = ({ user, quiz, questions, slug }) => {
             </div>
           );
         })}
-        <div
-          className="w-1/5 ml-10"
-          style={{
-            width: "10%",
-            boxShadow: "7px 7px 5px 0px rgba(0,0,0,0.75)",
-          }}
-        >
-          <Button type="submit" buttonText="Submit" />
-        </div>
+        {!submitted && (
+          <div
+            className="w-1/5 ml-10"
+            style={{
+              width: "10%",
+              boxShadow: "7px 7px 5px 0px rgba(0,0,0,0.75)",
+            }}
+          >
+            <Button type="submit" buttonText="Submit" />
+          </div>
+        )}
       </form>
     </div>
   );

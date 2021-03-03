@@ -18,5 +18,8 @@ class PublicController < ApplicationController
 
     def load_quiz
       @quiz = Quiz.find_by(slug: params[:slug])
+      unless @quiz
+        render status: :unprocessable_entity, json: { error: "Quiz not found!" }
+      end
     end
 end
