@@ -15,7 +15,7 @@ class AttemptsController < ApplicationController
   end
 
   def check_existing_user
-    @attempt = @user.attempts.find_or_create_by(quiz: @quiz.id)
+    @attempt = @user.attempts.find_or_create_by(quiz_id: @quiz.id)
     if @attempt.is_submitted?
       render status: :unprocessable_entity, json: { notice: "You have already attempted this quiz." }
     else
@@ -46,6 +46,9 @@ class AttemptsController < ApplicationController
 
     def load_quiz
       @quiz = Quiz.find_by(slug: params[:slug])
+      unless @quiz
+        render status: :unprocessable_entity, json: { error: "Quiz not found!" }
+      end
     end
 
     def load_user
